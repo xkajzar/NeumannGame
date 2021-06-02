@@ -102,14 +102,14 @@ namespace engine
 			m_gui.text.setString("");
       
 			testPO=testOM->findUnit(x * tileSize, y * tileSize, activePlayer);
-
-			if (testPO != nullptr && testPO->getOwner() == activePlayer)
-			{
+			if (testPO != nullptr) {
 				m_gui.LoadObject(testPO, activePlayer);
-				float sizef = testPO->getMoveSpeed();
-				selectedMoveRange.setSize(sf::Vector2f(tileSize*sizef*2+tileSize, tileSize*sizef*2+tileSize));
-				selectedMoveRange.setPosition(testPO->getPosition().x-(sizef*tileSize), testPO->getPosition().y-(sizef*tileSize));
-				unitIsSelected = true;
+				if (testPO->getOwner() == activePlayer) {
+					float sizef = testPO->getMoveSpeed();
+					selectedMoveRange.setSize(sf::Vector2f(tileSize * sizef * 2 + tileSize, tileSize * sizef * 2 + tileSize));
+					selectedMoveRange.setPosition(testPO->getPosition().x - (sizef * tileSize), testPO->getPosition().y - (sizef * tileSize));
+					unitIsSelected = true;
+				}
 			}
 			else
 			{
@@ -180,11 +180,17 @@ namespace engine
 		if (player1State.getLandConquered() >= (m_gameMap->getLand() / 2))
 		{
 			std::cout << "PLAYER 1 WIN!!!" << std::endl;
+			ActivePlayerText.setString("Player 1 Wins");
+			ActivePlayerText.setPosition(40, 210);
+			ActivePlayerText.setCharacterSize(160);
 		}
 
 		if (player2State.getLandConquered() >= (m_gameMap->getLand() / 2))
 		{
 			std::cout << "PLAYER 2 WIN!!!" << std::endl;
+			ActivePlayerText.setString("Player 2 Wins");
+			ActivePlayerText.setPosition(40, 210);
+			ActivePlayerText.setCharacterSize(160);
 		}
 		
 		selectedMoveRange.setSize(sf::Vector2f(0, 0));
@@ -476,6 +482,7 @@ namespace engine
 		{
 			m_renderTexture.clear();
 			m_renderMap.renderMap(*m_gameMap, m_renderTexture);
+			
 			changed=0;
 		}
 		testOM->drawAll(&m_renderTexture);
