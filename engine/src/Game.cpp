@@ -41,6 +41,7 @@ namespace engine
 		selectedMoveRange.setPosition(0, 0);
 		selectedMoveRange.setSize(sf::Vector2f(tileSize, tileSize));
 
+
 		auto building_1 = unitFactory->create(game::ObjectType::SpaceStation, m_gameMap->getTile(1, 1), game::Ownership::Player1);
 		auto unit_1 = unitFactory->create(game::ObjectType::Probe, m_gameMap->getTile(1, 2), game::Ownership::Player1);
 		auto unit_3 = unitFactory->create(game::ObjectType::Worker, m_gameMap->getTile(2, 1), game::Ownership::Player1);
@@ -136,6 +137,7 @@ namespace engine
 
 	void Game::endMove()
 	{
+		changed = 1;
 		// Global update po kazdom tahu:
 		// 1. Mining
 		// 2. Tower attacks
@@ -299,7 +301,8 @@ namespace engine
 				}
 				break;
 
-			case sf::Event::KeyPressed:							//key pressed
+			case sf::Event::KeyPressed:
+															//key pressed
 				if (m_event.key.code == sf::Keyboard::Space)	//space pressed switch player
 				{
 					if (activePlayer == game::Ownership::Player1)
@@ -482,11 +485,11 @@ namespace engine
 		{
 			m_renderTexture.clear();
 			m_renderMap.renderMap(*m_gameMap, m_renderTexture);
-			
+			testOM->drawAll(&m_renderTexture);
+			m_renderTexture.display();
 			changed=0;
 		}
-		testOM->drawAll(&m_renderTexture);
-		m_renderTexture.display();
+		
 		
 		const sf::Texture& texture = m_renderTexture.getTexture();
 
